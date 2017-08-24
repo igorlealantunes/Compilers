@@ -12,18 +12,33 @@
 
 import sys
 from Lexicon_compiler import Lexicon_compiler
+from Syntactic_compiler import Syntactic_compiler
 
 def main(argv):
 
-	print("File contents")
+	#print("File contents")
 	
 	file_contents = ""
 	for line in sys.stdin:
 		file_contents += line
 	
-	compiler = Lexicon_compiler(file_contents)
-	compiler.run()
-	compiler.print_result()
+	lex_compiler = Lexicon_compiler(file_contents)
+	lex_compiler.run()
+	#lex_compiler.print_result()
+
+	elements = lex_compiler.get_elements()
+
+	syn_compiler = Syntactic_compiler(elements)
+	syn_compiler.run()
 
 if __name__ == "__main__":
   	main(sys.argv)
+
+
+
+
+
+
+
+
+  	

@@ -38,7 +38,7 @@ class Lexicon_compiler:
 
 	def run(self):
 		
-		print("Running...")
+		#print("Running...")
 
 		line_num = 0
 		for line in self._program_text.split("\n"):
@@ -74,14 +74,9 @@ class Lexicon_compiler:
 				if(self._is_commenting):
 					break
 
-				#checar se a palavra eh composta por letras ou underline
-				if(str.isalpha(line[i]) or (line[i] == '_')):
-					i = self._validate_words(line_num, i)
+				if(line[i] == "/" and line[i+1] == "/"):
+					break;
 
-					if( i >= line_length):
-						continue
-					
-			
 				#checar se eh numero
 				if(str.isdigit(line[i]) or line[i] == '.'):
 
@@ -97,6 +92,13 @@ class Lexicon_compiler:
 						continue
 					
 
+				#checar se a palavra eh composta por letras ou underline
+				if(str.isalpha(line[i]) or (line[i] == '_')):
+					i = self._validate_words(line_num, i)
+
+					if( i >= line_length):
+						continue
+
 				#checa os operadores e delimitadores
 				if( line[i] in self._delimiters ):
 					i = self._validate_delimiters(line_num, i)
@@ -106,7 +108,7 @@ class Lexicon_compiler:
 				if(self.checkValidation(line, i)):
 
 					print("Linha : " + line )
-					print("ERRO %s NAO FAZ PARTE DO ALFABETO, LINHA %d" % (line[i], line_num + 1))
+					print("ERRO %s NAO FAZ PARTE DO ALFABETO, LINHA %d, COLUNA %d" % (line[i], line_num + 1, i))
 					sys.exit(1)
 					
 				i += 1
@@ -128,7 +130,7 @@ class Lexicon_compiler:
 
 	def _validate_comments(self, line_num, i):
 
-		print("-- VALIDTE COMMENTS -- ")
+		#print("-- VALIDTE COMMENTS -- ")
 		
 		line = self._program_text.splitlines()[line_num]
 		line_length = len(line)
@@ -154,7 +156,7 @@ class Lexicon_compiler:
 
 	def _validate_words(self, line_num, i):
 
-		print("-- VALIDTE WORDS -- ")
+		#print("-- VALIDTE WORDS -- ")
 
 		line = self._program_text.splitlines()[line_num]
 		line_length = len(line)
@@ -180,16 +182,45 @@ class Lexicon_compiler:
 
 		return i
 
-	#.9999999a nao detectado
 	def _validate_numbers(self, line_num, i):
 
-		print("-- VALIDTE NUMBERS -- ")
+		#print("-- VALIDTE NUMBERS -- ")
 
 		line = self._program_text.splitlines()[line_num]
 		line_length = len(line)
 
+		line_from_i = ""
+
+		j = i
+		while( j < line_length ):
+			line_from_i += line[j]
+			j+=1
+
 		number = line[i]
 		i += 1
+
+		if "i+" in line_from_i or "i-" in line_from_i:
+
+			while( i < line_length and str.isdigit(line[i]) ):
+				number += line[i]
+				i += 1
+
+			if line[i] == "i":
+				number += line[i]
+				i += 1
+				if line[i] == "+" or line[i] == "-":
+					number += line[i]
+					i += 1
+
+			while( i < line_length and str.isdigit(line[i]) ):
+				number += line[i]
+				i += 1
+
+			self._elements.append(Element(number, "Numero complexo", line_num))
+
+			return i
+
+		# fim checa de complexo
 
 		while( i < line_length and str.isdigit(line[i])):
 			number += line[i]
@@ -222,7 +253,7 @@ class Lexicon_compiler:
 
 	def _validate_operators(self, line_num, i):
 
-		print("-- VALIDTE OPERATORS -- ")
+		#print("-- VALIDTE OPERATORS -- ")
 
 		line = self._program_text.splitlines()[line_num]
 		line_length = len(line)
@@ -230,7 +261,7 @@ class Lexicon_compiler:
 		# take care with erros if undefined in line[i + 1]
 		if( line[i] + line[i + 1] in [':=', '>=', '<='] ):
 			self._elements.append(Element(line[i] + line[i + 1], "Operators", line_num))
-			#i += 2
+			i += 1
 		elif( line[i] in self._operators):
 			self._elements.append(Element(line[i], "Operators", line_num))
 			#i += 1	
@@ -239,7 +270,7 @@ class Lexicon_compiler:
 
 	def _validate_delimiters(self, line_num, i):
 
-		print("-- VALIDTE DELIMITERS -- ")
+		#print("-- VALIDTE DELIMITERS -- ")
 
 		line = self._program_text.splitlines()[line_num]
 		line_length = len(line)
@@ -258,3 +289,5 @@ class Lexicon_compiler:
 
 		return ((line[i] == ' ') or (line[i] == '\t') or (line[i] == '\n') )
 
+	def get_elements(self):
+		return self._elements
