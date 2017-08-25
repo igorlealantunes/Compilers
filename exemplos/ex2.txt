@@ -1,0 +1,13 @@
+PROCEDURE PEDEDADOS;
+
+VAR
+
+I : INTEGER ;
+
+BEGIN
+FOR I:=1 TO NALUNOS DO
+BEGIN
+{WRITE ('Introduza a Nota do aluno',I,' : ');
+READLN (NOTA[I]);}
+END;
+END;
