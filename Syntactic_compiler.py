@@ -83,8 +83,8 @@ class Syntactic_compiler:
 
 
         self._variable_declaration()
-        #self._subprogram_declaration()
-        #self._compound_command()
+        self._subprogram_declaration()
+        self._compound_command()
 
     def _variable_declaration(self):
         if self._compare_token(["var"]):
@@ -136,11 +136,67 @@ class Syntactic_compiler:
                 self._generate_error()
 
     def _subprogram_declaration(self):
-        pass
+        if self._compare_token(["procedure"]):
+            self._read_next()
+            
+            if self._compare_class(["Indentifier"]):
+                self._read_next()
 
-    def _subprogram_declaration_v2(self):
-        pass
+                # Check if there are arguments (optional)
+                self._arguments()
 
+                if self._compare_token([";"]):
+                    self._read_next()
+                else: # error missing ;
+                    self._generate_error()
+
+            else: # error missing procedure name
+                self._generate_error()
+
+            self._variable_declaration()
+            self._subprogram_declaration()
+            self._compound_command()
+
+    def _subprogram_variable_list_declaration(self):
+        self._identifier_list()
+
+        if self._compare_token([":"]):
+            self._read_next()
+            
+            if self._compare_token(["integer", "real", "boolean"]):
+                self._read_next()
+
+                if self._compare_token([";"]):
+                    self._read_next()
+
+                    if self._compare_class(["Indentifier"]): 
+                        #self._read_next() not needed
+                        self._identifier_list_v2()
+
+                        self._subprogram_variable_list_declaration()
+
+            else: #error integer, real, boolean
+                self._generate_error()
+        else: # error :
+            self._generate_error()
+
+    
+    def _arguments(self):
+
+        if self._compare_token(["("]):
+            self._read_next()
+
+            self._subprogram_variable_list_declaration()
+
+            if self._compare_token([")"]):
+                self._read_next()
+
+            else:# missing )
+                self._generate_error()
+
+    # Todo, processa o corpo do programa princiapl e tambem dos procedures (being ... end;)
+    def _compound_command(self):
+        pass # todo
 
 
 
