@@ -16,7 +16,7 @@ class Lexicon_compiler:
 		self._key_words  = ["program", "var", "integer", "real", "boolean", "procedure", "begin", "end", "if", "then", "else", "while", "do", "not"]
 		
 		self._delimiters = [";", ".", ":", "(", ")", ","]
-		self._operators  = ["<", ">", "<=", ">=", "<>", "+", "-", "*", "/", ":="]
+		self._operators  = ["<", ">", "<=", ">=", "<>", "+", "-", "*", "/", ":=", "="]
 		
 		self._comment_opening_tag = "{"
 		self._comment_closing_tag = "}"
@@ -259,7 +259,7 @@ class Lexicon_compiler:
 		line_length = len(line)
 
 		# take care with erros if undefined in line[i + 1]
-		if( line[i] + line[i + 1] in [':=', '>=', '<='] ):
+		if( line[i] + line[i + 1] in [':=', '>=', '<=', '<>'] ):
 			self._elements.append(Element(line[i] + line[i + 1], "Operators", line_num))
 			i += 1
 		elif( line[i] in self._operators):

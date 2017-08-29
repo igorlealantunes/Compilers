@@ -16,26 +16,27 @@ end;
 procedure prod2(d, b: integer);
     var a: integer;
 begin
+    something2
 end;
 
 procedure prod1;
 begin
+    something3
 end;
 
 begin
     a := 1 + 1;
 
     if a = b then
-    begin
-        write1(1+1)
-    end;
+
+        a := 1 + 1;
+        write1(1 + 1);
+
 
     if a = b then
-    begin
-        write1(1+1)
-    end
+        write1(1 + 1);
     else
-        write2;
+        write2(2 + 2);
 
     while Ch <> 2 do
     begin
@@ -45,5 +46,5 @@ begin
         d := 3 * multiplica(soma(5), menos(6)) or true;
         e := a or false;
         f := true or 3.5
-    end
+    end;
 end.
