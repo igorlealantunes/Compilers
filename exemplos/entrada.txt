@@ -4,9 +4,9 @@ var
    final, f2    : real;
    agrvai, agr2 : boolean;
 begin  {tente gerar um erro usando um caracter n‹o permitido.. tipo $}
-   NUMERO := 3 * 5 + 7 - 9;
-   //if ( NUMERO >= 20i+33 ) and ( NUMERO <= 90 ) then
+   NUMERO := 3 * 5 + 7;
+   if ( NUMERO >= 20i+33 ) and ( NUMERO <= 90 ) then
       NUMERO := 10 / 3;
    final := NUMERO + 9;
    real_with_point := .9999999;
-end.
+end;

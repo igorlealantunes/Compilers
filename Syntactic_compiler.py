@@ -57,10 +57,14 @@ class Syntactic_compiler:
 
         print(message)
 
+        print ("\n\t CALL STACK : \n")
         for i in range(0, 10):
-            caller = getframeinfo(stack()[i][0])
-            print ("%s:%d - %s" % (caller.filename, caller.lineno, ""))
-
+            try :
+                caller = getframeinfo(stack()[i][0])
+                print ("%s:%d - %s" % (caller.filename, caller.lineno, ""))
+            except:
+                pass
+                
         sys.exit()
 
     # initial program call
@@ -131,7 +135,6 @@ class Syntactic_compiler:
         else:
             self._generate_error()
 
-
     def _identifier_list_v2(self):
         if self._compare_token([","]):
             self._read_next()
@@ -146,7 +149,6 @@ class Syntactic_compiler:
 
         if self._compare_token(["procedure"]):
             self._subprogram_declaration()
-
 
     def _subprogram_declaration(self):
         if self._compare_token(["procedure"]):
@@ -193,7 +195,6 @@ class Syntactic_compiler:
         else: # error :
             self._generate_error()
 
-    
     def _arguments(self):
 
         if self._compare_token(["("]):
@@ -270,7 +271,6 @@ class Syntactic_compiler:
                 self._read_next()
             else:
                 self._generate_error()
-
 
     def _command(self):
 
@@ -354,7 +354,6 @@ class Syntactic_compiler:
             self._read_next()
             self._simple_expression()
 
-
     def _term_v2(self):
 
         if self._compare_token(["*", "/", "and"]): # muliplicativos
@@ -394,7 +393,7 @@ class Syntactic_compiler:
             self._factor()
 
         else:
-            self._generate_error("Factor Error")
+            self._generate_error(" ERROR - Expected : Indentifier OR Integer Number OR Real Number OR Boolean OR not OR Expression line " + str(self._current.line))
 
     def _factor_v2(self):
 
@@ -406,7 +405,6 @@ class Syntactic_compiler:
                 self._read_next()
             else:
                 self._generate_error()
-
 
     def _list_expression(self):
         self._expression()
