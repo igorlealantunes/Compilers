@@ -47,13 +47,13 @@ class Lexicon_compiler:
 			i = 0
 
 			while( i < line_length):
+				
 				"""
 				print (" line: " + line)
 				print (" line_length : " + str(line_length) )
 				print (" i : " + str(i) )
 				print (" is commenting : " + str(self._is_commenting) )
 				"""
-
 				#self.print_result()
 
 				# checks if is closing a comment without opening

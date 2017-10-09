@@ -1,13 +1,13 @@
-PROCEDURE PEDEDADOS;
+program PEDEDADOS;
 
-VAR
+var
 
-I : INTEGER ;
+I : integer ;
 
-BEGIN
-FOR I:=1 TO NALUNOS DO
-BEGIN
+begin
+for I:=1 TO NALUNOS DO
+begin
 {WRITE ('Introduza a Nota do aluno',I,' : ');
 READLN (NOTA[I]);}
-END;
-END;
+end;
+end;

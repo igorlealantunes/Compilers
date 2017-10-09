@@ -225,6 +225,8 @@ class Syntactic_compiler:
                     # to read more
                     if self._compare_token(["procedure"]): 
                         self._subprogram_declaration_v2()
+                    else:
+                        self._command() # Mudanca critica aqui, esse else nao deveria existir
 
                 else: #missing ; or .
                     self._generate_error()
@@ -312,10 +314,40 @@ class Syntactic_compiler:
             else:
                 self._generate_error()
         
+        elif self._compare_token(["do"]):
+            self._read_next()
+
+            print("\n\n\tReading do....\n")
+
+            self._command()
+            self._read_next()
+
+            if self._compare_token(["while"]):
+                self._read_next()
+                self._expression()
+                
+            else:
+                self._generate_error()
+
         elif self._compare_token(["else"]): # de sinal
             self._read_next()
             self._command()
         
+        elif self._compare_token(["end"]):
+
+            self._read_next()
+            if self._compare_token([";", "."]):
+                self._read_next()
+
+                # to read more
+                if self._compare_token(["procedure"]): 
+                    self._subprogram_declaration_v2()
+                else:
+                    self._command()
+
+            else: #missing ; or .
+                self._generate_error()
+
         else:
             self._generate_error("Command error l." + str(self._current.line))
 

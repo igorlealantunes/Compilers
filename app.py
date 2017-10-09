@@ -24,7 +24,7 @@ def main(argv):
 	
 	lex_compiler = Lexicon_compiler(file_contents)
 	lex_compiler.run()
-	#lex_compiler.print_result()
+	lex_compiler.print_result()
 
 	elements = lex_compiler.get_elements()
 

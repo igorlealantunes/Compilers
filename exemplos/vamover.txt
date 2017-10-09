@@ -1,49 +1,54 @@
-program Program;
+program Programa;
 var a, b, c, d: integer;
     e, f, g, h: real;
 
+procedure prod1;
+begin
+a := 1 + 1;
+end;
 
-procedure prod3(a : integer; i: boolean; c: real);  
-    var b: integer;
-        procedure prod3_1(g, d : integer);
+procedure prod2(d, b: integer);
+    var a,ch: integer;
+begin
+end;
+
+
+procedure prod3(a : integer; i: boolean; c: real);
+    var b, something: integer;
+        procedure prod3_1;
         begin
             readln
         end;
 begin
-    something
-end;
-
-procedure prod2(d, b: integer);
-    var a: integer;
-begin
-    something2
-end;
-
-procedure prod1;
-begin
-    something3
+    something := 4;
 end;
 
 begin
     a := 1 + 1;
+    
+    if a = b then
+    begin
+        prod3(1+1, true, 3.4);
+    end;
 
     if a = b then
-        
-        a := 1 + 1;
-        write1(1 + 1);
+    begin
+        prod3(1+1, false, 3.4);
+    end;
 
-    if a = b then
-        write1(1 + 1);
-    else
-        write2(2 + 2);
-
-    while Ch <> 2 do
+    while a <> 2 do
     begin
         a := - b + c;
-        b := 3.3 * metodo;
+
+        begin
+            a := - b + c;
+            begin
+                prod2(1,1);
+                a := - b + c;
+            end;
+        end;
+
+        b := 4 + 1;
         c := a or b and not c;
-        d := 3 * multiplica(soma(5), menos(6)) or true;
-        e := a or false;
-        f := true or 3.5
     end;
 end.
