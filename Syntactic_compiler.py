@@ -1,6 +1,7 @@
 
 from Element import Element
 from inspect import getframeinfo, stack
+from Symbol_analizer import Symbol_analizer
 import sys 
 
 class Syntactic_compiler:
@@ -18,6 +19,8 @@ class Syntactic_compiler:
         # Stores the last elements used to validate in the function _compare_token and _compare_class
         self._last_compared_array = []
 
+        self.Symbol_analizer = Symbol_analizer()
+
     def _read_next(self):
         self._current_index += 1
 
@@ -27,6 +30,13 @@ class Syntactic_compiler:
             print ("\n\n DONE\n")
             sys.exit()
 
+        if self._current.token == "begin":
+            self.Symbol_analizer.increment_x()
+        elif self._current.token == "end":
+            self.Symbol_analizer.decrement_x()
+            
+            if self.Symbol_analizer.x == 0:
+                self.Symbol_analizer.end_scope()
 
         print ("Reading : " + self._current.token + " - " + self._current.tokenType)
         
@@ -77,9 +87,15 @@ class Syntactic_compiler:
     def _program(self):
 
         if self._compare_token(["program"]):
+
+            self.Symbol_analizer.begin_scope()
+
             self._read_next()
 
             if self._compare_class(["Indentifier"]):
+
+                self.Symbol_analizer.process_symbol(self._current.token, self._current.line)
+            
                 self._read_next()
 
                 if self._compare_token([";"]):  
@@ -130,6 +146,9 @@ class Syntactic_compiler:
     def _identifier_list(self):
         # if there are identifiers to read => search for more
         if self._compare_class(["Indentifier"]): 
+
+            self.Symbol_analizer.process_symbol(self._current.token, self._current.line)
+
             self._read_next()
             self._identifier_list_v2()
         else:
@@ -140,6 +159,9 @@ class Syntactic_compiler:
             self._read_next()
             
             if self._compare_class(["Indentifier"]):
+
+                self.Symbol_analizer.process_symbol(self._current.token, self._current.line)
+
                 self._read_next()
                 self._identifier_list_v2()
             else:
@@ -148,13 +170,21 @@ class Syntactic_compiler:
     def _subprogram_declaration_v2(self):
 
         if self._compare_token(["procedure"]):
+
+            # do not use here self.Symbol_analizer.begin_scope()
+
             self._subprogram_declaration()
 
     def _subprogram_declaration(self):
         if self._compare_token(["procedure"]):
+
             self._read_next()
             
             if self._compare_class(["Indentifier"]):
+
+                self.Symbol_analizer.process_symbol(self._current.token, self._current.line)
+                self.Symbol_analizer.begin_scope()
+
                 self._read_next()
 
                 # Check if there are arguments (optional)
@@ -185,7 +215,7 @@ class Syntactic_compiler:
                     self._read_next()
 
                     if self._compare_class(["Indentifier"]): 
-                        #self._read_next() not needed
+                        
                         self._identifier_list_v2()
 
                         self._subprogram_variable_list_declaration()
@@ -218,6 +248,9 @@ class Syntactic_compiler:
             #self._read_next()
             if self._compare_token(["end"]):
 
+                #if self.Symbol_analizer.x == 0
+                    #self.Symbol_analizer.end_scope()
+                
                 self._read_next()
                 if self._compare_token([";", "."]):
                     self._read_next()
@@ -278,6 +311,8 @@ class Syntactic_compiler:
 
         if self._compare_class(["Indentifier"]):
 
+            self.Symbol_analizer.process_symbol(self._current.token, self._current.line)
+            
             self._read_next()
 
             if self._compare_token([":="]):

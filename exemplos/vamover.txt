@@ -1,4 +1,4 @@
-program Programa;
+program programa1;
 var a, b, c, d: integer;
     e, f, g, h: real;
 
@@ -10,6 +10,8 @@ end;
 procedure prod2(d, b: integer);
     var a,ch: integer;
 begin
+    a := 1 + 2;
+    {nooo := 1;}
 end;
 
 
@@ -17,7 +19,7 @@ procedure prod3(a : integer; i: boolean; c: real);
     var b, something: integer;
         procedure prod3_1;
         begin
-            readln
+            
         end;
 begin
     something := 4;
@@ -44,6 +46,7 @@ begin
             a := - b + c;
             begin
                 prod2(1,1);
+                {prod22(1,1);}
                 a := - b + c;
             end;
         end;

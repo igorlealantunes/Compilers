@@ -12,53 +12,65 @@ from Element import Element
 import sys
 
 class Symbol_analizer:
-	
-	def __init__(self):
-		self.list = []
-		self.token = "$";
+    
+    def __init__(self):
+        self.list = []
+        self.token = "$"
+        self.x = 0
 
-	def begin_scope(self):
-		self.list.append(self.token)
-		self.print("Novo escopo...")
+    def begin_scope(self):
+        self.list.append(self.token)
+        self.print("Novo escopo...")
 
-	def end_scope(self):
-		
-		i = len(self.list) - 1
-		while self.list[i] != self.token:
-			self.list.pop()
-			self.print()
-			i -= 1
+    def end_scope(self):
+        
+        i = len(self.list) - 1
+        while self.list[i] != self.token:
+            self.list.pop()
+            self.print()
+            i -= 1
 
-		self.list.pop()
+        self.list.pop()
 
-		self.print("After removal...")
+        self.print("After removal...")
 
-	def add_symbol(self, symbol):
-		self.list.append(symbol)
-		self.print("Added symbol: " + symbol)
+    def add_symbol(self, symbol):
+        self.list.append(symbol)
+        self.print("Added symbol: " + symbol)
 
-	def is_declared(self, symbol):
-		return symbol in self.list
+    def process_symbol(self, symbol, current_line = ""):
 
-	def print(self, txt = ""):
+        if self.x == 0:
+            self.add_symbol(symbol)
+        else:
+            print("\tChecking is declared: " + symbol)
+            if not self.is_declared(symbol):
+                error = "Symbol not declared !: " + symbol + (" On Line: " + str(current_line) ) if current_line != "" else "" 
+                self._generate_error(error)
 
-		if txt != "":
-			print(txt+"\n")
+    def is_declared(self, symbol):
+        return symbol in self.list
 
-		r = "STACK: "
-		
-		for s in self.list:
-			r += str(s) + ', '
-		
-		print(r+'\n')
+    def print(self, txt = ""):
 
+        if txt != "":
+            print(txt+"\n")
 
+        r = "STACK: "
+        
+        for s in self.list:
+            r += str(s) + ', '
+        
+        print(r+'\n')
 
+    def _generate_error(self, message = ""):
+        print ("\n\n\tERROR : " + message)
+        sys.exit()
 
+    def increment_x(self):
+        self.x += 1
+        print("\n\n\t\tx: " + str(self.x))
 
-
-
-
-
-
-
+    def decrement_x(self):
+        self.x -= 1
+        print("\n\n\t\tx: " + str(self.x))
